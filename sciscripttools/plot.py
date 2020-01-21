@@ -36,7 +36,7 @@ class figure_parameters:
     Object to store all the deafult figure parameters.
     """
         
-    def __init__(self, parameters = fig_params_report):
+    def __init__(self, parameters=fig_params_report):
         
         def load_parameter(parameter):
             """
@@ -137,7 +137,7 @@ class standard_font:
     Standardise the figure fonts.
     """
 
-    def __init__(self, font_size = 12):
+    def __init__(self, font_size=12):
 
         self.font_size = font_size
         
@@ -158,7 +158,7 @@ class standard_font:
         
         return 0
 
-    def set_font_size(self, font_size = None):
+    def set_font_size(self, font_size=None):
         """Set the default font size"""
 
         if font_size == None:
@@ -214,7 +214,7 @@ class standard_figure:
     sf.add_subplot_labels() # add subplot labels to figure
     """
 
-    def __init__(self, fig, axes, fig_params = fig_params_report):
+    def __init__(self, fig, axes, fig_params=fig_params_report):
         """
         Initialise the standard figure. 
         Sets the figure size and axes ticks.
@@ -331,8 +331,8 @@ class standard_figure:
         
         return axis_xy
 
-    def standard_legend(self, axes = None, title=None, loc = 1, ncol = 1,
-                                            columnspacing = None):
+    def standard_legend(self, axes=None, title=None, loc=1, ncol=1,
+                                            columnspacing=None):
         """
         Standarise the legend.
 
@@ -358,7 +358,7 @@ class standard_figure:
                                 columnspacing = columnspacing)
         return 0
 
-    def add_subplot_labels(self, axes = None, adjust = None, fig_adjust_bottom = None):
+    def add_subplot_labels(self, axes=None, adjust=None, fig_adjust_bottom=None):
         """
         Add subplot labels to the axes.
 
@@ -398,7 +398,7 @@ class standard_figure:
 
         return 0
 
-    def add_subplot_labels_right(self, axes = None, adjust_x = None, adjust_y = None):
+    def add_subplot_labels_right(self, axes=None, adjust_x=None, adjust_y=None):
         """
         Add subplot labels to the right of the axes.
 
@@ -434,7 +434,8 @@ class standard_figure:
 
         return 0
 
-    def reduce_axes_clutter(self, axes=None, axis_xy=None, nticks = False, order = False):
+    def reduce_axes_clutter(self, axes=None, axis_xy=None, nticks=False, 
+                                                                order=False):
         """
         Reduce ticks and thus numbers that appear on the axes.
 
@@ -473,7 +474,7 @@ class standard_figure:
 
         return 0        
 
-    def standard_size_adjust(self, height_percentage = None, adjust_bottom = None):
+    def standard_size_adjust(self, height_percentage=None, adjust_bottom=None):
         """
         Adjust the size of the figure based on a height fractional percentage.
 
@@ -499,7 +500,7 @@ class standard_figure:
         return
 
     # x and y labels -------------------
-    def latex_unit(self, unit = None, brackets = None):
+    def latex_unit(self, unit=None, brackets=None):
         """
         A string which holds the latex defined unit with brackets.
 
@@ -528,7 +529,7 @@ class standard_figure:
         else:
             raise Exception("Incorrect string for brackets argument.")
 
-    def xlabel(self, ax, label, unit = None, brackets = None):
+    def xlabel(self, ax, label, unit=None, brackets=None):
         """
         Set the x axis label with a label and a unit.
 
@@ -551,7 +552,7 @@ class standard_figure:
         ax.set_xlabel("{} {}".format(label, self.latex_unit(unit, brackets)))
         return 0
 
-    def ylabel(self, ax, label, unit = None, brackets = None):
+    def ylabel(self, ax, label, unit=None, brackets=None):
         """
         Set the y axis label with a label and a unit.
 
@@ -574,7 +575,7 @@ class standard_figure:
         ax.set_ylabel("{} {}".format(label, self.latex_unit(unit, brackets)))
         return 0
 
-    def xylabel(self, ax, xlabel, xunit, ylabel, yunit, brackets = None):
+    def xylabel(self, ax, xlabel, xunit, ylabel, yunit, brackets=None):
         """
         Set the x and y axis labels with labels and units.
 
@@ -680,10 +681,10 @@ class standard_figure:
     # some code overlaps 
 
     # could use self.axes here to run over multiple axes
-    def schematic_arrow_axis(self, ax, xaxis = True, yaxis = True,
-                                                        xwidth = 0.001, ywidth = 0.001,
-                                                        remove_defaults = True,
-                                                        set_yaxis_zero = None):
+    def schematic_arrow_axis(self, ax, xaxis=True, yaxis=True,
+                                                        xwidth=0.001, ywidth=0.001,
+                                                        remove_defaults=True,
+                                                        set_yaxis_zero=None):
         """
         Replace axis lines with arrows to represent a schematic diagram.
 
@@ -752,7 +753,7 @@ class standard_figure:
         return 0
 
     # single text in the sense that only ticks or only x label
-    def schematic_subplots_adjust_single_text(self, adjust_bottom = None):
+    def schematic_subplots_adjust_single_text(self, adjust_bottom=None):
         """
         Adjust the bottom of a figure, such that the label of the x axis in
         a schematic figure lines up with the label of a normal figure.
@@ -771,10 +772,10 @@ class standard_figure:
         return 0 
 
 
-    def schematic_log_arrow_axis(self, ax, xaxis = True, yaxis = True,
-                                            xwidth = 0.001, ywidth = 0.001,
-                                            remove_defaults = True,
-                                            set_yaxis_zero = None):
+    def schematic_log_arrow_axis(self, ax, xaxis=True, yaxis=True,
+                                            xwidth=0.001, ywidth=0.001,
+                                            remove_defaults=True,
+                                            set_yaxis_zero=None):
         """
         Replace axis lines with arrows to represent a schematic diagram,
         for log plots
@@ -864,11 +865,11 @@ class standard_figure:
 
     # this uses very similar code to schematic arrows
     # could reduce this to reuse overlapping code
-    def vector_arrows_2D(self, ax, xaxis = True, yaxis = True,
-                        length = 5.0, x_offset = 0.0, y_offset = 0.0,
-                        xlabel = "", ylabel = "",
-                        xlabel_x_offset = 0.0, xlabel_y_offset = 0.0,
-                        ylabel_x_offset = 0.0, ylabel_y_offset = 0.0):
+    def vector_arrows_2D(self, ax, xaxis=True, yaxis=True,
+                        length=5.0, x_offset=0.0, y_offset=0.0,
+                        xlabel="", ylabel="",
+                        xlabel_x_offset=0.0, xlabel_y_offset=0.0,
+                        ylabel_x_offset=0.0, ylabel_y_offset=0.0):
         """
         Plot small vector arrows to help define 2D directions
  
@@ -880,7 +881,7 @@ class standard_figure:
             An arrow for the x direction.
         yaxis : True, Bool
             An arrow for the y direction.
-        length = 5.0, float
+        length : 5.0, float
             Length of the arrow.
         x_offset : float
             Base location of the x arrow.
@@ -1012,7 +1013,7 @@ class standard_figure:
 # Log Plots
 
 def loglog_guide_manual(ax, x, p0, p1, colour="grey", label="", linestyle=":",
-                                                linewidth=1.5, logtype = None):
+                                                linewidth=1.5, logtype=None):
     """
     Manual log line of form p0 * ( x^(p1) )
 
@@ -1113,7 +1114,7 @@ def loglog_guide(x, y, indices=None):
 
 # Other
 
-def move_view(ax, point, width, height = None, maintain_aspect_ratio = True):
+def move_view(ax, point, width, height=None, maintain_aspect_ratio=True):
     """
     Move the view of a plot around a point.
 
