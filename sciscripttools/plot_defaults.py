@@ -32,9 +32,10 @@ fig_params_report = {
     "adjust_subplot_wspace" : 0.05, # default value is good for sharing of y axis
     "adjust_subplot_hspace" : 0.075,
 
+    # for figures with no ticks, this is the amount to adjust the label
+    # to match the label position of plots with ticks
     "schematic_adjust_bottom_no_ticks" : 0.13, 
-    # this matches the label position of plots with ticks
-    # so the effective plot area is bigger on these plots
+    # note the effective plot area is bigger on these plots
 
     "adjust_subplot_label_right_x" : 0.56,
     "adjust_subplot_label_right_y" : 0.5,

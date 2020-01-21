@@ -189,8 +189,46 @@ class standard_font:
         plt.close()  
 
 class standard_figure:
+    """
+    Class to standarise figures given a set of parameters.
+    Methods act on a figure and axes to modify the figure and axes.
+    
+    Built upon the matplotlib figure and axes classes.
+
+    Parameters
+    ----------
+    fig : matplotlib figure
+        Matplotlib figure object
+    axes : matplotlib.axes
+        Single axis or multiple axes
+    fig_params : dict, figure_parameters
+        Dicitionary or figure_parameters object with the figure parameters
+
+    Example
+    -------
+
+    fig, axes = plt.subplots(1, 2)      # normal matplotlib call
+    fig_params = figure_parameters()    # initialise figure parameters
+    sf = standard_figure(fig, axes, fig_params) # initialise standard figure
+
+    sf.add_subplot_labels() # add subplot labels to figure
+    """
 
     def __init__(self, fig, axes, fig_params = fig_params_report):
+        """
+        Initialise the standard figure. 
+        Sets the figure size and axes ticks.
+
+        Parameters
+        ----------
+        fig : matplotlib figure
+            Matplotlib figure object.
+        axes : matplotlib.axes
+            Single axis or multiple axes.
+        fig_params : dict, figure_parameters
+            Dicitionary or figure_parameters object with the figure parameters.
+            Default is a fig_params_report define in plot_defaults.py
+        """
 
         self.fig = fig
         
@@ -203,16 +241,20 @@ class standard_figure:
         
         if isinstance(fig_params, figure_parameters):
             self.fig_params = fig_params
-        # process fig_params into a object
         elif isinstance(fig_params, dict):
+            # process fig_params into an object
             self.fig_params = figure_parameters(fig_params)
         else:
             raise Exception("Failed to process argument fig_params.")
 
+        # set the figure size and axes ticks
         self.standard_size()
         self.standard_axes_ticks()
         
     def standard_size(self):
+        """
+        Set the size of the figure.
+        """
 
         self.fig.set_size_inches([self.fig_params.width, self.fig_params.height])
 
@@ -223,7 +265,9 @@ class standard_figure:
         return 0
 
     def standard_axes_ticks(self):
-        "Standardise axis ticks"
+        """
+        Standardise axis ticks.
+        """
         for i in range(0, len(self.axes)):
             ax = self.axes[i]
             ax.minorticks_on()
@@ -232,8 +276,18 @@ class standard_figure:
         return
 
     def argument_axes(self, axes):
+        """
+        Process input argument of 'axes' for other class methods.
+        Defaults to perform the operation on all axes.
 
-        # default for other functions should be 'axes = None'
+        Default for other functions should be 'axes = None'
+
+        Parameters
+        ----------
+        axes : matplotlib.axes
+            Single axis or multiple axes
+        """
+
         # default to all axes if none
         if axes == None:
             axes = self.axes
@@ -248,6 +302,23 @@ class standard_figure:
 
     def standard_legend(self, axes = None, title=None, loc = 1, ncol = 1,
                                             columnspacing = None):
+        """
+        Standarise the legend.
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes
+        title : None, str
+            Legend title.
+            Default is no title.
+        loc : int
+            Legend location.
+        ncol : int
+            Number of columns.
+        columnspacing : float
+            Column spacing.
+        """
 
         axes = self.argument_axes(axes)
         for ax in axes:
@@ -256,6 +327,18 @@ class standard_figure:
         return 0
 
     def add_subplot_labels(self, axes = None, adjust = None, fig_adjust_bottom = None):
+        """
+        Add subplot labels to the axes.
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes
+        adjust : float
+            Adjust location
+        fig_adjust_bottom : float
+            Adjust the bottom of the figure.
+        """
 
         axes = self.argument_axes(axes)
 
@@ -282,18 +365,31 @@ class standard_figure:
 
         return 0
 
-    def add_subplot_labels_right(self, adjust_x = None, adjust_y = None):
+    def add_subplot_labels_right(self, axes = None, adjust_x = None, adjust_y = None):
+        """
+        Add subplot labels to the right of the axes.
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes
+        adjust_x : float
+            Adjust x location of the label.
+        adjust_y : float
+            Adjust y location of the label.
+        """
         
+        axes = self.argument_axes(axes)
+
         if adjust_x == None:
             adjust_x = self.fig_params.adjust_subplot_label_right_x
         if adjust_y == None:
             adjust_y = self.fig_params.adjust_subplot_label_right_y
         
-        
         # defaults chosen as it works well with default values
         alphabet = ["a", "b", "c", "d", "e", "f"]
-        for i in range(0, len(self.axes )):
-            ax = self.axes[i]
+        for i in range(0, len(axes)):
+            ax = axes[i]
             x_label_px, x_label_py  = ax.xaxis.get_label().get_position()
             ax.text(x_label_px + adjust_x, 
                         x_label_py + adjust_y, 
@@ -305,6 +401,24 @@ class standard_figure:
         return 0
 
     def reduce_axes_clutter(self, axes=None, axis_xy =  ["x", "y"], nticks = False, order = False):
+        """
+        Reduce ticks and thus numbers that appear on the axes.
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes.
+            Defaults to all axes in a figure.
+        axis_xy : ["x", "y"], "x", "y"
+            Select which x, y, or both axes to reduce the clutter on.
+        nticks : False, Bool
+            Number of major ticks on the axis.
+            The number may not be rigidly preserved.
+        order : float
+            Change the major order format.
+            E.g. to have values on the axis written with respect to 10^-4
+            order = -4
+        """
 
         axes = self.argument_axes(axes)
 
@@ -328,8 +442,20 @@ class standard_figure:
 
         return 0        
 
-    def standard_size_adjust(self, height_percentage = 1.0, adjust_bottom = None):
+    def standard_size_adjust(self, height_percentage = None, adjust_bottom = None):
+        """
+        Adjust the size of the figure based on a height fractional percentage.
 
+        Parameters
+        ----------
+        height_percentage : float
+            Fractional percentage of which to scale the height of the figure.
+        adjust_bottom : float
+            Adjust the bottom of the figure, to give space for label.
+        """
+
+        if height_percentage == None:
+            height_percentage = self.height_small_percentage
         if adjust_bottom == None:
             adjust_bottom = self.fig_params.adjust_bottom
         
@@ -342,7 +468,20 @@ class standard_figure:
         return
 
     # x and y labels -------------------
-    def latex_unit(self, unit, brackets = None):
+    def latex_unit(self, unit = None, brackets = None):
+        """
+        A string which holds the latex defined unit with brackets.
+
+        Parameters
+        ----------
+        unit : str
+            String with unit as defined with the latex SI package.
+            E.g. "\\meter\\per\\second"
+        brackets : "round", "square"
+            The style of brackets to use around the unit.
+            "round" (unit)
+            "square" [unit] 
+        """
         
         if brackets == None:
             brackets = self.fig_params.brackets
@@ -358,51 +497,156 @@ class standard_figure:
         else:
             raise Exception("Incorrect string for brackets argument.")
 
-    def xlabel(self, ax, xlabel, xunit = None, brackets = None):
-        ax.set_xlabel("{} {}".format(xlabel, self.latex_unit(xunit, brackets)))
+    def xlabel(self, ax, label, unit = None, brackets = None):
+        """
+        Set the x axis label with a label and a unit.
+
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis object.
+        label : str
+            Label for the axis.
+            For latex maths use $$, e.g. "Energy Change $r^{-a}$"
+        unit : str
+            String with unit as defined with the latex SI package.
+            E.g. "\\meter\\per\\second"
+        brackets : "round", "square"
+            The style of brackets to use around the unit.
+            "round" (unit)
+            "square" [unit] 
+        """
+
+        ax.set_xlabel("{} {}".format(label, self.latex_unit(unit, brackets)))
         return 0
 
-    def ylabel(self, ax, ylabel, yunit = None, brackets = None):
-        ax.set_ylabel("{} {}".format(ylabel, self.latex_unit(yunit, brackets)))
+    def ylabel(self, ax, label, unit = None, brackets = None):
+        """
+        Set the y axis label with a label and a unit.
+
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis object.
+        label : str
+            Label for the axis.
+            For latex maths use $$, e.g. "Energy Change $r^{-a}$"
+        unit : str
+            String with unit as defined with the latex SI package.
+            E.g. "\\meter\\per\\second"
+        brackets : "round", "square"
+            The style of brackets to use around the unit.
+            "round" (unit)
+            "square" [unit] 
+        """
+
+        ax.set_ylabel("{} {}".format(label, self.latex_unit(unit, brackets)))
         return 0
 
     def xylabel(self, ax, xlabel, xunit, ylabel, yunit, brackets = None):
+        """
+        Set the x and y axis labels with labels and units.
+
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis object.
+        xlabel : str
+            Label for the axis.
+            For latex maths use $$, e.g. "Energy Change $r^{-a}$"
+        xunit : str
+            String with unit as defined with the latex SI package.
+            E.g. "\\meter\\per\\second"
+        ylabel : str
+        yunit : str
+
+        brackets : "round", "square"
+            The style of brackets to use around the unit.
+            "round" (unit)
+            "square" [unit] 
+        """
         self.xlabel(self, ax, xlabel, xunit, brackets)
         self.ylabel(self, ax, ylabel, yunit, brackets)
         return 0
 
     # could use self.axes here to run over multiple axes
-    def remove_ticks(self, ax):
+    def remove_ticks(self, axes=None):
         """
-        removing the axis ticks
+        Remove the axis ticks for both x and y axes.
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes.
+            Defaults to all axes in a figure.
         """
-        ax.set_xticks([]) # labels
-        ax.set_yticks([])
-        ax.xaxis.set_ticks_position('none') # tick markers
-        ax.yaxis.set_ticks_position('none')
+
+        axes = self.argument_axes(axes)
+
+        for ax in axes:
+            ax.set_xticks([]) # labels
+            ax.set_yticks([])
+            ax.xaxis.set_ticks_position('none') # tick markers
+            ax.yaxis.set_ticks_position('none')
+
         return 0
         
     # could use self here to run over multiple axes
-    def remove_axes(self, ax):
+    def remove_axes(self, axes=None):
         """
-        removing the default axis on all sides
+        Remove the visable axis lines on all sides.
+
+        Parameters
+        ----------
+        axes : matplotlib.axes
+            Single axis or multiple axes.
+            Defaults to all axes in a figure.
         """
-        for side in ['bottom','right','top','left']:
-            ax.spines[side].set_visible(False)
+
+        axes = self.argument_axes(axes)
+
+        for ax in axes:
+            for side in ['bottom','right','top','left']:
+                ax.spines[side].set_visible(False)
 
         return 0
+
+
+    # --------------------------------
+    # functions below could use some cleaning up and improved reusabilty
+    # some code overlaps 
 
     # could use self.axes here to run over multiple axes
     def schematic_arrow_axis(self, ax, xaxis = True, yaxis = True,
                                                         xwidth = 0.001, ywidth = 0.001,
                                                         remove_defaults = True,
                                                         set_yaxis_zero = None):
-    
-        # width default from matplotlib is 0.001
-        # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html
+        """
+        Replace axis lines with arrows to represent a schematic diagram.
 
-        # set_yaxis_zero: moves the x axis
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis.
+        xaxis : True, Bool
+            Turn the x axis into an arrow.
+        yaxis : True, Bool
+            Turn the y axis into an arrow.
+        xwidth : 0.001,
+            Thickness of the arrow line.
+            Width default from matplotlib is 0.001
+            # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html
+        ywidth : 0.001, float
+            Thickness of the arrow line.
+            Width default from matplotlib is 0.001
+            # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html 
+        remove_defaults, True, Bool
+            Remove the current ticks and axes.
+        set_yaxis_zero : float
+            Moves the x axis.
+        """
 
+        # remove current axes
         if remove_defaults == True:
             self.remove_ticks(ax)
             self.remove_axes(ax)
@@ -446,12 +690,22 @@ class standard_figure:
 
     # single text in the sense that only ticks or only x label
     def schematic_subplots_adjust_single_text(self, adjust_bottom = None):
-        
-            if adjust_bottom == None:
-                adjust_bottom = self.fig_params.schematic_adjust_bottom_no_ticks
-        
-            self.fig.subplots_adjust(bottom = bottom)
-            return 0 
+        """
+        Adjust the bottom of a figure, such that the label of the x axis in
+        a schematic figure lines up with the label of a normal figure.
+
+        Parameters
+        ----------
+        adjust_bottom : float
+            Adjust the bottom of the figure.
+
+        """
+
+        if adjust_bottom == None:
+            adjust_bottom = self.fig_params.schematic_adjust_bottom_no_ticks
+    
+        self.fig.subplots_adjust(bottom = bottom)
+        return 0 
 
 
     def schematic_log_arrow_axis(self, ax, xaxis = True, yaxis = True,
@@ -459,7 +713,29 @@ class standard_figure:
                                             remove_defaults = True,
                                             set_yaxis_zero = None):
         """
-        Draw schematic arrow axes for log plots
+        Replace axis lines with arrows to represent a schematic diagram,
+        for log plots
+
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis.
+        xaxis : True, Bool
+            Turn the x axis into an arrow.
+        yaxis : True, Bool
+            Turn the y axis into an arrow.
+        xwidth : 0.001,
+            Thickness of the arrow line.
+            Width default from matplotlib is 0.001
+            # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html
+        ywidth : 0.001, float
+            Thickness of the arrow line.
+            Width default from matplotlib is 0.001
+            # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html 
+        remove_defaults, True, Bool
+            Remove the current ticks and axes.
+        set_yaxis_zero : float
+            Moves the x axis.
         """
         # width default from matplotlib is 0.001
         # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.arrow.html
@@ -532,6 +808,33 @@ class standard_figure:
                         ylabel_x_offset = 0.0, ylabel_y_offset = 0.0):
         """
         Plot small vector arrows to help define 2D directions
+ 
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single axis.
+        xaxis : True, Bool
+            An arrow for the x direction.
+        yaxis : True, Bool
+            An arrow for the y direction.
+        length = 5.0, float
+            Length of the arrow.
+        x_offset : float
+            Base location of the x arrow.
+        y_offset : float
+            Base location of the y arrow.
+        xlabel : str 
+            Label for the x arrow.
+        ylabel : str
+            Label for the y arrow.
+        xlabel_x_offset : float
+            Offset the x label in the x direction.
+        xlabel_y_offset : float
+            Offset the x label in the y direction.
+        ylabel_x_offset : float
+            Offset the y label in the x direction.
+        ylabel_y_offset : float
+            Offset the y label in the y direction.
         """
         xmin, xmax = ax.get_xlim()
         ymin, ymax = ax.get_ylim()
