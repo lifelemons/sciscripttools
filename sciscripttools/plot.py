@@ -149,7 +149,7 @@ class figure_parameters:
         # default figure adjustments
         self.adjust_bottom = load_parameter("adjust_bottom")
         self.adjust_left = load_parameter("adjust_left")
-        self.adjust_subplot_bottom = load_parameter("adjust_bottom")
+        self.adjust_subplot_bottom = load_parameter("adjust_subplot_bottom")
         self.adjust_subplot_label = load_parameter("adjust_subplot_label")
         self.adjust_subplot_wspace = load_parameter("adjust_subplot_wspace")
         self.adjust_subplot_hspace = load_parameter("adjust_subplot_hspace")
@@ -536,7 +536,7 @@ class standard_figure:
         if adjust == None:
             adjust = self.fig_params.adjust_subplot_label
         if fig_adjust_bottom == None:
-            fig_adjust_bottom = self.fig_params.adjust_bottom
+            fig_adjust_bottom = self.fig_params.adjust_subplot_bottom   
         
         
         
