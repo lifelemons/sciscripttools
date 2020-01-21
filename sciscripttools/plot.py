@@ -687,7 +687,7 @@ class standard_figure:
         else:
             raise Exception("Incorrect string for brackets argument.")
 
-    def xlabel(self, ax, label, unit=None, brackets=None):
+    def xlabel(self, axes, label, unit=None, brackets=None):
         """
         Set the x axis label with a label and a unit.
 
@@ -706,11 +706,13 @@ class standard_figure:
             "round" (unit)
             "square" [unit] 
         """
-
-        ax.set_xlabel("{} {}".format(label, self.latex_unit(unit, brackets)))
+        axes = self.argument_axes(axes)
+        for ax in axes:
+            ax.set_xlabel("{} {}".format(label, self.latex_unit(unit, brackets)))
+        
         return 0
 
-    def ylabel(self, ax, label, unit=None, brackets=None):
+    def ylabel(self, axes, label, unit=None, brackets=None):
         """
         Set the y axis label with a label and a unit.
 
@@ -729,11 +731,13 @@ class standard_figure:
             "round" (unit)
             "square" [unit] 
         """
-
-        ax.set_ylabel("{} {}".format(label, self.latex_unit(unit, brackets)))
+        axes = self.argument_axes(axes)
+        for ax in axes:
+            ax.set_ylabel("{} {}".format(label, self.latex_unit(unit, brackets)))
+        
         return 0
 
-    def xylabel(self, ax, xlabel, xunit, ylabel, yunit, brackets=None):
+    def xylabel(self, axes, xlabel, xunit, ylabel, yunit, brackets=None):
         """
         Set the x and y axis labels with labels and units.
 
@@ -755,8 +759,11 @@ class standard_figure:
             "round" (unit)
             "square" [unit] 
         """
-        self.xlabel(self, ax, xlabel, xunit, brackets)
-        self.ylabel(self, ax, ylabel, yunit, brackets)
+        axes = self.argument_axes(axes)
+        for ax in axes:
+            self.xlabel(self, ax, xlabel, xunit, brackets)
+            self.ylabel(self, ax, ylabel, yunit, brackets)
+        
         return 0
 
     def set_xtick_labels(self, ax, x):
