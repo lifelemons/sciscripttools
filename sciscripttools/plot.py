@@ -3,6 +3,7 @@ import json
 import logging
 import pprint
 
+import matplotlib
 import matplotlib.pyplot as plt
 # for the standard_font class
 from matplotlib import rc
@@ -653,7 +654,7 @@ class standard_figure:
         self.fig.set_size_inches([w, h * height_percentage])
 
         self.fig.subplots_adjust(left=self.fig_params.adjust_left) 
-        self.fig.subplots_adjust(bottom=fig_adjust_bottom)        
+        self.fig.subplots_adjust(bottom=adjust_bottom)        
 
         return
 
@@ -761,12 +762,12 @@ class standard_figure:
         """
         axes = self.argument_axes(axes)
         for ax in axes:
-            self.xlabel(self, ax, xlabel, xunit, brackets)
-            self.ylabel(self, ax, ylabel, yunit, brackets)
+            self.xlabel(ax, xlabel, xunit, brackets)
+            self.ylabel(ax, ylabel, yunit, brackets)
         
         return 0
 
-    def set_xtick_labels(self, ax, x):
+    def set_xtick_labels(self, axes, x):
         """
         Set x axis tick lables.
         Parameters
@@ -777,12 +778,16 @@ class standard_figure:
             x values of numbers.
             x is converted into strings within the function.
         """
+        axes = self.argument_axes(axes)
+
         labels = np.asarray(x, dtype=str)
-        ax.set_xticks(x)
-        ax.set_xticklabels(labels)
+
+        for ax in axes:
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
         return 0
     
-    def set_ytick_labels(self, ax, y):
+    def set_ytick_labels(self, axes, y):
         """
         Set y axis tick lables.
         Parameters
@@ -793,9 +798,15 @@ class standard_figure:
             y values of numbers.
             y is converted into strings within the function.
         """
+
+        axes = self.argument_axes(axes)
+
         labels = np.asarray(y, dtype=str)
-        ax.set_yticks(y)
-        ax.set_yticklabels(labels)
+
+        for ax in axes:
+            ax.set_yticks(y)
+            ax.set_yticklabels(labels)
+
         return 0
 
     def remove_ticks(self, axes=None):
@@ -931,7 +942,7 @@ class standard_figure:
         if adjust_bottom is None:
             adjust_bottom = self.fig_params.schematic_adjust_bottom_no_ticks
     
-        self.fig.subplots_adjust(bottom = bottom)
+        self.fig.subplots_adjust(bottom = adjust_bottom)
         return 0 
 
 
@@ -1117,8 +1128,9 @@ class standard_figure:
 
     def loglog_ticks(self, axes=None, axis_xy=None):
         """
-        Display the loglog ticks. 
+        Sort the display the loglog ticks. 
         (Try and force the display of the ticks.)
+        (Generally reduce number of ticks.)
 
         Parameters
         ----------
@@ -1147,7 +1159,8 @@ class standard_figure:
 
     def loglog_remove_labels(self, axes=None, axis_xy=None):
         """
-        Remove the log 10^(a) labels.
+        Remove other log 10^(a) labels.
+        Reduces the log labels for more minor ticks.
 
         Parameters
         ----------
