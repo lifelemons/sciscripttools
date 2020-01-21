@@ -33,7 +33,80 @@ class FixedOrderFormatter(ScalarFormatter):
 
 class figure_parameters:
     """
-    Object to store all the deafult figure parameters.
+    Object to store all the default figure parameters.
+
+    A dictionary can be:
+    - auto generated from plot_defaults.py.
+    - passed in as a dict object
+    - read in from a file, by providing a filename when initialising the object.
+
+    The parameters can also be outputed to a dictionary and also saved to a
+    json file.
+
+    Note: 
+    - Note all variables need to be defined; however some methods of
+    standard_figure class may fail as they do not have any defaults.
+    - When a class variable is updated, the stored dictionary is not 
+    automatically updated. 
+
+    Methods
+    -------
+    __init__(self, parameters=fig_params_report) : initialisation
+        Generate a figure_parameters object either using the default from 
+        plot_defaults.py, a user given dictionary, or a json file.
+    create_dictionary(self)
+        Generate a dictionary object of the variables.
+    update_dictionary(self)
+        Update the parameters_dictionary with the current values. 
+    save_data(self, filename, directory="")
+        Update and output the parameters_dictionary to a json file.
+        This allows the parameters to be loaded in for another figure.
+
+    Class Variables
+    ---------------
+    parameters_dictionary : dict
+        The original parameter dictionary
+    font_size : float
+        Font size for the figure.
+    width : float
+        Width of the figure in inches.
+    ratio : float
+        Ratio of the width and height.
+    height : float
+        Height of the figure in inches.
+    height_small_percentage : float
+        Fractional percentage to define the standard size for small plots.
+    
+    adjust_bottom : float
+        Adjust the bottom padding.
+    adjust_left : float
+        Adjust the left side padding.
+    adjust_subplot_bottom : float
+        Adjust the bottom padding for figures with multiple subplots and thus
+        subplot labels.
+    adjust_subplot_label : float
+        Adjust the location of the labels for the subplots.
+    adjust_subplot_wspace : float
+        Adjust the width spacing between subplots.
+    adjust_subplot_hspace : float
+        Adjust the height spacing between subplots.
+
+    adjust_subplot_label_right_x : float
+        For labels on the right hand side of the figure, 
+        adjust the x location of subplot labels.
+    adjust_subplot_label_right_y : float
+        For labels on the right hand side of the figure, 
+        adjust the y location of subplot labels.
+    
+    schematic_adjust_bottom_no_ticks : float
+        For figures with no ticks, adjust the padding such that the
+        labels match with the location of a plot with ticks.
+        Note the effective plot area is bigger on these plots.
+
+    brackets : "round", "square"
+        The style of brackets to use around the unit.
+        "round" (unit)
+        "square" [unit] 
     """
         
     def __init__(self, parameters=fig_params_report):
@@ -75,17 +148,17 @@ class figure_parameters:
 
         # default figure adjustments
         self.adjust_bottom = load_parameter("adjust_bottom")
-        self.adjust_subplot_label = load_parameter("adjust_subplot_label")
         self.adjust_left = load_parameter("adjust_left")
-        self.adjust_bottom = load_parameter("adjust_bottom")
+        self.adjust_subplot_bottom = load_parameter("adjust_bottom")
+        self.adjust_subplot_label = load_parameter("adjust_subplot_label")
         self.adjust_subplot_wspace = load_parameter("adjust_subplot_wspace")
         self.adjust_subplot_hspace = load_parameter("adjust_subplot_hspace")
-
-        self.schematic_adjust_bottom_no_ticks = load_parameter("schematic_adjust_bottom_no_ticks")
 
         # for subplot labels on the right hand side
         self.adjust_subplot_label_right_x = load_parameter("adjust_subplot_label_right_x")
         self.adjust_subplot_label_right_y = load_parameter("adjust_subplot_label_right_y")
+
+        self.schematic_adjust_bottom_no_ticks = load_parameter("schematic_adjust_bottom_no_ticks")
 
         self.brackets = load_parameter("brackets")
         
@@ -104,9 +177,9 @@ class figure_parameters:
                 "height_small_percentage" : self.height_small_percentage,
 
                 "adjust_bottom" : self.adjust_bottom,
-                "adjust_subplot_label" : self.adjust_subplot_label,
                 "adjust_left" : self.adjust_left,
-                "adjust_bottom" : self.adjust_bottom,
+                "adjust_subplot_bottom" : self.adjust_subplot_bottom,
+                "adjust_subplot_label" : self.adjust_subplot_label,
                 "adjust_subplot_wspace" : self.adjust_subplot_wspace,
                 "adjust_subplot_hspace" : self.adjust_subplot_hspace,
 
@@ -135,6 +208,15 @@ class figure_parameters:
 class standard_font:
     """
     Standardise the figure fonts.
+
+    Methods
+    -------
+     __init__(self, font_size=12) : initialisation
+        Set the font to use LaTeX and standardise the font sizes within a figure.
+    set_font(self)
+        Set the font to use LaTeX.
+    set_font_size(self, font_size=None)
+        Standardise the font sizes within a figure.
     """
 
     def __init__(self, font_size=12):
@@ -195,7 +277,7 @@ class standard_figure:
     
     Built upon the matplotlib figure and axes classes.
 
-    Parameters
+    Class Variables
     ----------
     fig : matplotlib figure
         Matplotlib figure object
@@ -212,6 +294,82 @@ class standard_figure:
     sf = standard_figure(fig, axes, fig_params) # initialise standard figure
 
     sf.add_subplot_labels() # add subplot labels to figure
+
+    Methods
+    -------
+    __init__(self, fig, axes, fig_params=fig_params_report) : initialisation
+        Create a standard_figure object, which stores the figure, axes, and 
+        parameters.
+        It also sets the size and ticks for the figure.
+    standard_size(self)
+        Sets the size of the figure.
+        Used within __init__.
+    standard_axes_ticks(self)
+        Sets the ticks for the figure.
+        Used within __init__.
+
+    argument_axes(self, axes)
+        Process input argument of 'axes' for other class methods.
+    argument_axis_xy(self, axis_xy)
+        Process input argument of 'axis_xy' for other class methods.
+
+    standard_legend(self, axes=None, title=None, loc=1, ncol=1, 
+                                                columnspacing=None)
+        Standarise the legend.
+    add_subplot_labels(self, axes=None, adjust=None, fig_adjust_bottom=None)
+        Add subplot labels to the axes.
+    add_subplot_labels_right(self, axes=None, adjust_x=None, adjust_y=None)
+        Add subplot labels to the right of the axes.
+    reduce_axes_clutter(self, axes=None, axis_xy=None, nticks=False, 
+                                                                order=False)
+        Reduce ticks and thus numbers that appear on the axes.
+    
+    standard_size_adjust(self, height_percentage=None, adjust_bottom=None)
+        Adjust the size of the figure based on a height fractional percentage.
+
+    latex_unit(self, unit=None, brackets=None)
+        Generate a string for latex units in labels.
+    xlabel(self, ax, label, unit=None, brackets=None)
+    ylabel(self, ax, label, unit=None, brackets=None)
+    xylabel(self, ax, xlabel, xunit, ylabel, yunit, brackets=None)
+        Set the x, y, or both labels.
+
+    set_xtick_labels(self, ax, x)
+    set_ytick_labels(self, ax, y)
+        Set the x or y tick labels.
+
+    remove_ticks(self, axes=None)
+        Remove the axis ticks for both x and y axes.
+    remove_axes(self, axes=None)
+        Remove the visable axis lines.
+
+    schematic_arrow_axis(self, ax, xaxis=True, yaxis=True,
+                                                        xwidth=0.001, ywidth=0.001,
+                                                        remove_defaults=True,
+                                                        set_yaxis_zero=None)
+        Replace axis lines with arrows to represent a schematic diagram.
+    schematic_subplots_adjust_single_text(self, adjust_bottom=None)
+        Adjust the bottom of a figure, such that the label of the x axis in
+        a schematic figure lines up with the label of a normal figure.
+
+    schematic_log_arrow_axis(self, ax, xaxis=True, yaxis=True,
+                                            xwidth=0.001, ywidth=0.001,
+                                            remove_defaults=True,
+                                            set_yaxis_zero=None)
+        Replace axis lines with arrows to represent a schematic diagram,
+        for log plots
+
+    vector_arrows_2D(self, ax, xaxis=True, yaxis=True,
+                        length=5.0, x_offset=0.0, y_offset=0.0,
+                        xlabel="", ylabel="",
+                        xlabel_x_offset=0.0, xlabel_y_offset=0.0,
+                        ylabel_x_offset=0.0, ylabel_y_offset=0.0)
+        Plot small vector arrows to help define 2D directions
+
+    loglog_ticks(self, axes=None, axis_xy=None)
+        Display the loglog ticks. 
+    loglog_remove_labels(self, axes=None, axis_xy=None)
+        Remove the log 10^(a) labels.
     """
 
     def __init__(self, fig, axes, fig_params=fig_params_report):
@@ -633,7 +791,6 @@ class standard_figure:
         ax.set_yticklabels(labels)
         return 0
 
-    # could use self.axes here to run over multiple axes
     def remove_ticks(self, axes=None):
         """
         Remove the axis ticks for both x and y axes.
@@ -655,10 +812,9 @@ class standard_figure:
 
         return 0
         
-    # could use self here to run over multiple axes
     def remove_axes(self, axes=None):
         """
-        Remove the visable axis lines on all sides.
+        Remove the visable axis lines.
 
         Parameters
         ----------
