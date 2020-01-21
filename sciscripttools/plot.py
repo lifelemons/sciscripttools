@@ -243,7 +243,7 @@ class standard_font:
     def set_font_size(self, font_size=None):
         """Set the default font size"""
 
-        if font_size == None:
+        if font_size is None:
             font_size = self.font_size
         
         rc('font', size = font_size)          # controls default text sizes
@@ -447,7 +447,7 @@ class standard_figure:
         """
 
         # default to all axes if none
-        if axes == None:
+        if axes is None:
             axes = self.axes
         # if only one given, put it into an array
         else:
@@ -471,7 +471,7 @@ class standard_figure:
             Select which x, y, or both axes.
         """
 
-        if axis_xy == None:
+        if axis_xy is None:
             axis_xy = ["x", "y"]
         elif axis_xy == "x":
             axis_xy = ["x"]
@@ -533,9 +533,9 @@ class standard_figure:
 
         axes = self.argument_axes(axes)
 
-        if adjust == None:
+        if adjust is None:
             adjust = self.fig_params.adjust_subplot_label
-        if fig_adjust_bottom == None:
+        if fig_adjust_bottom is None:
             fig_adjust_bottom = self.fig_params.adjust_subplot_bottom   
         
         
@@ -573,9 +573,9 @@ class standard_figure:
         
         axes = self.argument_axes(axes)
 
-        if adjust_x == None:
+        if adjust_x is None:
             adjust_x = self.fig_params.adjust_subplot_label_right_x
-        if adjust_y == None:
+        if adjust_y is None:
             adjust_y = self.fig_params.adjust_subplot_label_right_y
         
         # defaults chosen as it works well with default values
@@ -644,9 +644,9 @@ class standard_figure:
             Adjust the bottom of the figure, to give space for label.
         """
 
-        if height_percentage == None:
+        if height_percentage is None:
             height_percentage = self.height_small_percentage
-        if adjust_bottom == None:
+        if adjust_bottom is None:
             adjust_bottom = self.fig_params.adjust_bottom
         
         w, h = self.fig.get_size_inches()
@@ -673,11 +673,11 @@ class standard_figure:
             "square" [unit] 
         """
         
-        if brackets == None:
+        if brackets is None:
             brackets = self.fig_params.brackets
 
         # if no unit given, return empty string
-        if unit == None:
+        if unit is None:
             return ""
         # otherwise return unit string
         if brackets == "round":
@@ -899,7 +899,7 @@ class standard_figure:
         # draw x and y axis
         if xaxis == True:
 
-            if set_yaxis_zero == None:
+            if set_yaxis_zero is None:
                 yzero = ymin
             else:
                 yzero = set_yaxis_zero
@@ -928,7 +928,7 @@ class standard_figure:
 
         """
 
-        if adjust_bottom == None:
+        if adjust_bottom is None:
             adjust_bottom = self.fig_params.schematic_adjust_bottom_no_ticks
     
         self.fig.subplots_adjust(bottom = bottom)
@@ -987,7 +987,7 @@ class standard_figure:
         # draw x and y axis
         if xaxis == True:
 
-            if set_yaxis_zero == None:
+            if set_yaxis_zero is None:
                 yzero = ymin
             else:
                 yzero = set_yaxis_zero
@@ -1202,7 +1202,7 @@ def loglog_guide_manual(ax, x, p0, p1, colour="grey", label="", linestyle=":",
         Loglog plots or semilogy plots.
     """
 
-    if logtype == None:
+    if logtype is None:
             logtype = "loglog"
 
     if label == "":
@@ -1296,7 +1296,7 @@ def move_view(ax, point, width, height=None, maintain_aspect_ratio=True):
     """
 
     # default to a box around the point
-    if height == None:
+    if height is None:
         height = width
 
     px = point[0]
