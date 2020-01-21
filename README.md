@@ -2,7 +2,21 @@
 
 Small set of tools and functions for scientific code and scripts.
 
-## IO Example
+## Install
+
+### pip
+```bash
+pip install sciscripttools
+```
+
+### Build from Source
+```
+git clone https://github.com/lifelemons/sciscripttools.git
+cd sciscripttools
+python setup.py install
+```
+## Examples 
+### IO
 An example to get started with the IO tools.
 ```python
 import sciscripttools as st
@@ -17,7 +31,7 @@ import sciscripttools as st
 _, power = st.load_data("power_exp_01")
 ```
 
-## Plot Example
+### Plot
 An example to get started with the plotting tools
 Note: standard_font and units of standard_figure require LaTeX!
 
@@ -59,3 +73,11 @@ sf.xlabel(axes, xlabel, xunit)
 fig.savefig("quick_plot.png")
 ```
 ![example quick plot](examples/readme_plot_example.png)
+
+## Contribute
+Found a bug, want to add functionality, or fixed a bug?
+Create an [issue](https://github.com/lifelemons/sciscripttools/issues) or [pull request](https://github.com/lifelemons/sciscripttools/pulls).
+Any comments or feedback, please write them down in an [issue](https://github.com/lifelemons/sciscripttools/issues).
+
+## Links
+[GitHub](https://github.com/lifelemons/sciscripttools)
