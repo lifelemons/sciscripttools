@@ -191,7 +191,7 @@ class standard_font:
 class standard_figure:
     """
     Class to standarise figures given a set of parameters.
-    Methods act on a figure and axes to modify the figure and axes.
+    Methods act on a figure and its axes to modify the figure and axes.
     
     Built upon the matplotlib figure and axes classes.
 
@@ -200,7 +200,7 @@ class standard_figure:
     fig : matplotlib figure
         Matplotlib figure object
     axes : matplotlib.axes
-        Single axis or multiple axes
+        Singluar matplotlib.axes or array of axes objects.
     fig_params : dict, figure_parameters
         Dicitionary or figure_parameters object with the figure parameters
 
@@ -224,7 +224,7 @@ class standard_figure:
         fig : matplotlib figure
             Matplotlib figure object.
         axes : matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
         fig_params : dict, figure_parameters
             Dicitionary or figure_parameters object with the figure parameters.
             Default is a fig_params_report define in plot_defaults.py
@@ -266,7 +266,7 @@ class standard_figure:
 
     def standard_axes_ticks(self):
         """
-        Standardise axis ticks.
+        Standardise the axes ticks.
         """
         for i in range(0, len(self.axes)):
             ax = self.axes[i]
@@ -285,7 +285,7 @@ class standard_figure:
         Parameters
         ----------
         axes : matplotlib.axes
-            Single axis or multiple axes
+            Singluar matplotlib.axes or array of axes objects.
         """
 
         # default to all axes if none
@@ -339,7 +339,8 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes
+            Singluar matplotlib.axes or array of axes objects.
+            Defaults to all axes in a figure.
         title : None, str
             Legend title.
             Default is no title.
@@ -364,9 +365,10 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes
+            Singluar matplotlib.axes or array of axes objects.
+            Defaults to all axes in a figure.
         adjust : float
-            Adjust location
+            Adjust location.
         fig_adjust_bottom : float
             Adjust the bottom of the figure.
         """
@@ -403,7 +405,8 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes
+            Singluar matplotlib.axes or array of axes objects.
+            Defaults to all axes in a figure.
         adjust_x : float
             Adjust x location of the label.
         adjust_y : float
@@ -438,10 +441,11 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
             Defaults to all axes in a figure.
         axis_xy : None, ["x", "y"], "x", "y"
             Select which x, y, or both axes to reduce the clutter on.
+            Defaults to both x and y axes.
         nticks : False, Bool
             Number of major ticks on the axis.
             The number may not be rigidly preserved.
@@ -636,7 +640,7 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
             Defaults to all axes in a figure.
         """
 
@@ -658,7 +662,7 @@ class standard_figure:
         Parameters
         ----------
         axes : matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
             Defaults to all axes in a figure.
         """
 
@@ -955,7 +959,7 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
             Defaults to all axes in a figure.
         axis_xy : None, ["x", "y"], "x", "y"
             Select which x, y, or both axes.
@@ -984,7 +988,7 @@ class standard_figure:
         Parameters
         ----------
         axes : None, matplotlib.axes
-            Single axis or multiple axes.
+            Singluar matplotlib.axes or array of axes objects.
             Defaults to all axes in a figure.
         axis_xy : None, ["x", "y"], "x", "y"
             Select which x, y, or both axes.
