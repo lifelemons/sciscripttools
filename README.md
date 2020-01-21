@@ -58,3 +58,4 @@ sf.xlabel(axes, xlabel, xunit)
 
 fig.savefig("quick_plot.png")
 ```
+![example quick plot](examples/quick_plot.png)
