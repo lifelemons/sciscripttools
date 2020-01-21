@@ -694,8 +694,8 @@ class standard_figure:
 
         Parameters
         ----------
-        ax : matplotlib axis
-            Single axis object.
+        axes : matplotlib.axes
+            Singluar matplotlib.axes or array of axes objects.
         label : str
             Label for the axis.
             For latex maths use $$, e.g. "Energy Change $r^{-a}$"
@@ -719,8 +719,8 @@ class standard_figure:
 
         Parameters
         ----------
-        ax : matplotlib axis
-            Single axis object.
+        axes : matplotlib.axes
+            Singluar matplotlib.axes or array of axes objects.
         label : str
             Label for the axis.
             For latex maths use $$, e.g. "Energy Change $r^{-a}$"
@@ -744,8 +744,8 @@ class standard_figure:
 
         Parameters
         ----------
-        ax : matplotlib axis
-            Single axis object.
+        axes : matplotlib.axes
+            Singluar matplotlib.axes or array of axes objects.
         xlabel : str
             Label for the axis.
             For latex maths use $$, e.g. "Energy Change $r^{-a}$"
@@ -772,8 +772,8 @@ class standard_figure:
         Set x axis tick lables.
         Parameters
         ----------
-        ax : matplotlib axis
-            Single matplotlib axis.
+        axes : matplotlib.axes
+            Singluar matplotlib.axes or array of axes objects.
         x : array
             x values of numbers.
             x is converted into strings within the function.
@@ -792,8 +792,8 @@ class standard_figure:
         Set y axis tick lables.
         Parameters
         ----------
-        ax : matplotlib axis
-            Single matplotlib axis.
+        axes : matplotlib.axes
+            Singluar matplotlib.axes or array of axes objects.
         y : array
             y values of numbers.
             y is converted into strings within the function.
