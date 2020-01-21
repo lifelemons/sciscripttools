@@ -19,6 +19,7 @@ _, power = st.load_data("power_exp_01")
 
 ## Plot Example
 An example to get started with the plotting tools
+Note: standard_font and units of standard_figure require LaTeX!
 
 ```python
 import numpy as np
@@ -57,4 +58,3 @@ sf.xlabel(axes, xlabel, xunit)
 
 fig.savefig("quick_plot.png")
 ```
-![example quick plot](examples/quick_plot.png)
