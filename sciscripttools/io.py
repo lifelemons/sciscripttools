@@ -204,7 +204,6 @@ def save_data(*args, file_format=".json", directory=""):
             # if data is not a dictionary already, create a dictionary
             if isinstance(data, dict) == False:
                 data = create_dictionary("d", data)
-                print(type(data))
             
             # convert dictionary items for writing to a json file
             prepare_json_dictionary(data)
