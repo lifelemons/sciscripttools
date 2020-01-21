@@ -977,9 +977,9 @@ class standard_figure:
 
         return 0
 
-    def loglog_plot_remove_labels_xaxis(self, axes=None, axis_xy=None):
+    def loglog_remove_labels(self, axes=None, axis_xy=None):
         """
-        Remove the log 10^(a) labels
+        Remove the log 10^(a) labels.
 
         Parameters
         ----------
