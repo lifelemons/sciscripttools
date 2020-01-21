@@ -157,7 +157,7 @@ def load_item(*args, file_format=".json", keys=[], directory=""):
     
     return item
 
-def save_data(*args, file_format=".json", directory="."):
+def save_data(*args, file_format=".json", directory=""):
     """
     Save a variable(s) to a file(s).
     
@@ -185,7 +185,7 @@ def save_data(*args, file_format=".json", directory="."):
     check_argument_pairs(args)
 
     # if the directory does not exist, create it
-    if os.path.exists(directory) == False:
+    if directory != "" and os.path.exists(directory) == False:
         logger.info("Creating directory: %s", directory)
         os.makedirs(directory)
 
