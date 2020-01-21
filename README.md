@@ -33,7 +33,7 @@ _, power = st.load_data("power_exp_01")
 
 ### Plot
 An example to get started with the plotting tools.
-Note: standard_font and units of standard_figure require LaTeX!
+Note: `standard_font` class and the unit functions of the `standard_figure` class require LaTeX!
 
 ```python
 import numpy as np
