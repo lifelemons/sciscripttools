@@ -300,6 +300,37 @@ class standard_figure:
         
         return axes
 
+    def argument_axis_xy(self, axis_xy):
+        """
+        Process input argument of 'axis_xy' for other class methods.
+        Defaults to perform the operation on both x and y axes.
+
+        Default for other functions should be 'axis_xy = None'
+
+        Parameters
+        ----------
+        axis_xy : None, ["x", "y"], "x", "y"
+            Select which x, y, or both axes.
+        """
+
+        if axis_xy == None:
+            axis_xy = ["x", "y"]
+        elif axis_xy == "x":
+            axis_xy = ["x"]
+        elif axis_xy == "y":
+            axis_xy = ["y"]
+        elif len(axis_xy) == 2:
+            if axis_xy[0] == "x" and axis_xy[1] == "y":
+                pass
+            elif axis_xy[0] == "y" and axis_xy[1] == "x":
+                pass
+            else:
+                raise Exception("Likely incorrect axis_xy argument.")
+        else:
+            raise Exception("Incorrect axis_xy argument.")
+        
+        return axis_xy
+
     def standard_legend(self, axes = None, title=None, loc = 1, ncol = 1,
                                             columnspacing = None):
         """
@@ -400,7 +431,7 @@ class standard_figure:
 
         return 0
 
-    def reduce_axes_clutter(self, axes=None, axis_xy =  ["x", "y"], nticks = False, order = False):
+    def reduce_axes_clutter(self, axes=None, axis_xy=None, nticks = False, order = False):
         """
         Reduce ticks and thus numbers that appear on the axes.
 
@@ -409,7 +440,7 @@ class standard_figure:
         axes : None, matplotlib.axes
             Single axis or multiple axes.
             Defaults to all axes in a figure.
-        axis_xy : ["x", "y"], "x", "y"
+        axis_xy : None, ["x", "y"], "x", "y"
             Select which x, y, or both axes to reduce the clutter on.
         nticks : False, Bool
             Number of major ticks on the axis.
@@ -421,11 +452,7 @@ class standard_figure:
         """
 
         axes = self.argument_axes(axes)
-
-        if axis_xy == "x":
-            axis_xy = ["x"]
-        elif axis_xy == "y":
-            axis_xy = ["y"]
+        axis_xy = self.argument_axis_xy(axis_xy)
 
         for ax in axes:
             for xy in axis_xy:
@@ -567,6 +594,38 @@ class standard_figure:
         """
         self.xlabel(self, ax, xlabel, xunit, brackets)
         self.ylabel(self, ax, ylabel, yunit, brackets)
+        return 0
+
+    def set_xtick_labels(self, ax, x):
+        """
+        Set x axis tick lables.
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single matplotlib axis.
+        x : array
+            x values of numbers.
+            x is converted into strings within the function.
+        """
+        labels = np.asarray(x, dtype=str)
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels)
+        return 0
+    
+    def set_ytick_labels(self, ax, y):
+        """
+        Set y axis tick lables.
+        Parameters
+        ----------
+        ax : matplotlib axis
+            Single matplotlib axis.
+        y : array
+            y values of numbers.
+            y is converted into strings within the function.
+        """
+        labels = np.asarray(y, dtype=str)
+        ax.set_yticks(y)
+        ax.set_yticklabels(labels)
         return 0
 
     # could use self.axes here to run over multiple axes
@@ -887,3 +946,211 @@ class standard_figure:
         # if point not in plot, text will not appear
         
         return 0
+
+    def loglog_ticks(self, axes=None, axis_xy=None):
+        """
+        Display the loglog ticks. 
+        (Try and force the display of the ticks.)
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes.
+            Defaults to all axes in a figure.
+        axis_xy : None, ["x", "y"], "x", "y"
+            Select which x, y, or both axes.
+        """
+
+        axes = self.argument_axes(axes)
+        axis_xy = self.argument_axis_xy(axis_xy)
+
+        locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=10)
+
+        for ax in axes:
+            for xy in axis_xy:
+                if xy == "x":
+                    ax.xaxis.set_minor_locator(locmin)
+                    ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+                if xy == "y": 
+                    ax.yaxis.set_minor_locator(locmin)
+                    ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+
+        return 0
+
+    def loglog_plot_remove_labels_xaxis(self, axes=None, axis_xy=None):
+        """
+        Remove the log 10^(a) labels
+
+        Parameters
+        ----------
+        axes : None, matplotlib.axes
+            Single axis or multiple axes.
+            Defaults to all axes in a figure.
+        axis_xy : None, ["x", "y"], "x", "y"
+            Select which x, y, or both axes.
+        """
+
+        axes = self.argument_axes(axes)
+        axis_xy = self.argument_axis_xy(axis_xy)
+
+        formatter = matplotlib.ticker.LogFormatter(labelOnlyBase=True, minor_thresholds=(1,2))
+        for ax in axes:
+            for xy in axis_xy:
+                if xy == "x":
+                    ax.get_xaxis().set_minor_formatter(formatter)
+                if xy == "y": 
+                    ax.get_yaxis().set_minor_formatter(formatter)
+
+        return 0
+
+
+
+# Log Plots
+
+def loglog_guide_manual(ax, x, p0, p1, colour="grey", label="", linestyle=":",
+                                                linewidth=1.5, logtype = None):
+    """
+    Manual log line of form p0 * ( x^(p1) )
+
+    Parameters
+    ----------
+    ax : matplotlib axis
+        Single matplotlib axis.
+    x : array
+        x value data
+    p0 : float
+        Constant
+    p1 : float
+        Power constant
+    colour : str
+        Matplotlib colours
+    label : str
+        Label for the line.
+    linestyle : str
+        matplotlib style of the line
+    linewidth : float
+        Thickness of the line.
+    logtype : "loglog", "semilogy"
+        Loglog plots or semilogy plots.
+    """
+
+    if logtype == None:
+            logtype = "loglog"
+
+    if label == "":
+        label_v = '{' + str(p1) + '}'
+        label = r'$r^{}$'.format(label_v)
+
+    if logtype == "loglog":
+        ax.loglog(x, p0*(np.power(x, p1)),
+                        linestyle=linestyle, color=colour, 
+                        label = label, linewidth = linewidth)
+
+    if logtype == "semilogy":
+        ax.semilogy(x, p0*(np.power(x, p1)),
+                                linestyle=linestyle, color=colour, 
+                                label = label, linewidth = linewidth)
+
+
+    return 0
+
+def loglog_guide(x, y, indices=None):
+    """
+    A rough fit of a loglog x and y line.
+    Uses the first and last point of x and y
+    A log line of form p0 * ( x^(p1) )
+    Returns the y values and the p constants.
+
+    Parameters
+    ----------
+    ax : matplotlib axis
+        Single matplotlib axis.
+    x : array
+        x values (does not need to be log values)
+    y : array
+        y values (does not need to be log values)
+    indices : None, array
+        Indices of x and y to fit to. 
+        Default will use first and last points of x and y.
+
+    Returns
+    -------
+    y_g : array
+        y values of guide line of form y_g = rf_p[0] * ( x^(rf_p[1]) )
+    rf_p : [p0, p1]
+        Rough fit parameters of log guide of form rf_p[0] * ( x^(rf_p[1]) )
+    """
+
+    if indices is None:
+        indices = np.arange(0,len(x), 1)
+
+    x = np.array(x)[indices]
+    y = np.array(y)[indices]
+
+    # remove 0.0 values and negatives
+    x = np.abs(x)[x != 0.0]
+    y = np.abs(y)[y != 0.0]
+
+    def rough_fit(x, y):
+        x_log = np.log(x)
+        y_log = np.log(y)
+        a_0 = y[0]/( np.power( x[0], ((y_log[0] - y_log[len(y)-1]) / (x_log[0] - x_log[len(x)-1])) ) )
+        g = (y_log[0] - y_log[len(y)-1]) / (x_log[0] - x_log[len(x)-1])
+        p_g = [a_0, round(g,2)]
+        return p_g
+
+    def model(x, p):
+        return p[0]*(np.power(x, p[1]))
+
+    rf_p = rough_fit(x, y) # rough fit parameters
+    y_g = model(x, rf_p) # log line of y values using rough fit
+
+    return y_g, rf_p
+
+# Other
+
+def move_view(ax, point, width, height = None, maintain_aspect_ratio = True):
+    """
+    Move the view of a plot around a point.
+
+    Parameters
+    ----------
+    ax : matplotlib axis
+        Single matplotlib axis.
+    point : [x, y]
+        Centre point of the view.
+    wdith : float
+        Width of the box.
+    height : float
+        Height of the box.
+    maintain_aspect_ratio : True, Bool
+        Retain the axis's current aspect ratio.
+    """
+
+    # default to a box around the point
+    if height == None:
+        height = width
+
+    px = point[0]
+    py = point[1]
+    wh = 0.5*width # width half
+    hh = 0.5*height # height half
+    
+    if maintain_aspect_ratio == True:
+        
+        # calculate current axis limit aspect ratio
+        xl1, xl2 = ax.get_xlim()
+        yl1, yl2 = ax.get_ylim()
+        axis_ratio = (np.abs(xl2 - xl1))/(np.abs(yl2 - yl1))
+        
+        # adjust height to match aspect ratio
+        hh = 0.5*(height/axis_ratio)
+    
+    ax.set_xlim([px - wh, px + wh])
+    ax.set_ylim([py - hh, py + hh])
+    
+    xl1, xl2 = ax.get_xlim()
+    yl1, yl2 = ax.get_ylim()
+    axis_ratio = (np.abs(xl2 - xl1))/(np.abs(yl2 - yl1))
+    
+    return 0
