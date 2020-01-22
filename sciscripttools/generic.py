@@ -49,7 +49,7 @@ def create_dictionary(*args):
         
     # multiple pairs
     else:
-        pairs = checks.process_arguement_pairs(args)
+        pairs = process_arguement_pairs(args)
         return dict(pairs)
         
     return 1
