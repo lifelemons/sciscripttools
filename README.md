@@ -18,17 +18,31 @@ python setup.py install
 ## Examples 
 ### IO
 An example to get started with the IO tools.
+It can save relatively basic python objects, such a values, strings, arrays, and 
+dictionaries of those items.
 ```python
 import sciscripttools as st
 
 power = [4,5,6]
 st.save_data("power_exp_01", power) # save a value, arrary, or dictionary
+
+exp_info = {"id": 20200117, "wire_r" : 0.005, 
+            "lengths_1": [0.1, 0.5, 1.5]}
+st.save_data("exp_01", exp_info, directory="data/")
+
+w1 = [0.1, 0.5, 1.5]
+w2 = [0.1, 0.3, 1.7]
+w3 = [0.1, 0.6, 1.2]
+radii = st.create_dictionary("w1",w1, "w2", w2, "w3", w3)
+st.save_data("radii", radii)
 ```
 Load the previous saved data with
 ```python
 import sciscripttools as st
 
-_, power = st.load_data("power_exp_01")
+exp_info = st.load_dictionary("exp_01", directory="data/")
+keys, radii = st.load_data("radii", keys = ["w1", "w3"]) # load straight into arrays
+power = st.load_item("power_exp_01")
 ```
 
 ### Plot
