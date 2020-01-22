@@ -44,6 +44,70 @@ def prepare_filename(filename, file_format, directory):
 
     return filename
 
+def load_dictionary(*args, keys=[], directory=""):
+    """
+    Load a dictionary(ies) from a file, or multiple files.
+    
+    Parameters
+    ----------
+    *args : str, multiple str, list of str, array of str etc.
+        A string, multiple strings, or collection of strings with the 
+        filename(s).
+
+    keys : [], list, array, str, optional
+        Names of items to load from the file(s).
+        Default will load all items from the file(s).
+        Can provide a single string to load a single key.
+    directory : "", str, optional
+        The path for the file.
+        Default will output to the working directory.
+        
+    Returns
+    -------
+    dictionaries : single item, list
+        item, or list, of the dictionary(ies) loaded from the file(s)
+        
+    Example
+    -------
+    exp_info = load_dictionary("exp_01_info", keys=["id", "wire"], directory="exps/")
+    """ 
+
+    filenames = args
+    file_format = ".json"
+
+    keys_arg = keys
+    # if a singular string, add it to an array
+    if isinstance(keys, str):
+        keys_arg = [keys]
+    
+    # if single item in filenames
+    # and not singluar string, filenames is (likely) a list of filenames
+    if len(filenames) == 1 and isinstance(filenames[0], str) == False:
+        logger.debug("Filenames type: %s", type(filenames))
+        filenames = filenames[0]
+    
+    dictionaries = []
+    
+    # iterate through filenames and load
+    for filename in filenames:
+        logger.info("Reading file: %s", filename)
+        filename = prepare_filename(filename, file_format, directory)
+        
+        dictionary = json.load(open(filename))
+        
+        # keys to read in
+        if keys_arg != []:
+            keys_arg, data = load_data(filename, keys=keys_arg)
+            dictionary = create_dictionary(keys_arg, data)
+        
+        dictionaries.append(dictionary)
+    
+    # if single key loaded, remove outter container
+    if len(dictionaries) == 1:
+        dictionaries = dictionaries[0]
+    
+    return dictionaries
+
 def load_data(*args, file_format=".json", keys=[], directory=""):
     """
     Load a item(s) from a file, or multiple files.
