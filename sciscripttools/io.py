@@ -216,7 +216,7 @@ def load_item(*args, file_format=".json", keys=[], directory=""):
     weights = load_item("system_01", "system_02", keys = "weights")
 
     """
-    key, item = st.load_data(args, file_format=file_format, 
+    key, item = load_data(args, file_format=file_format, 
                           keys=keys, directory=directory)
     
     return item
