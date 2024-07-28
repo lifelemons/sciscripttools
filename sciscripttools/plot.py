@@ -231,13 +231,13 @@ class standard_font:
         """Set the defaults fonts."""
 
         rc('text', usetex = True)
-        plt.rcParams['text.latex.preamble']=[r"\usepackage{amsmath} \usepackage{siunitx} \usepackage{bm}"] 
+        plt.rcParams['text.latex.preamble'] = r"\usepackage{amsmath} \usepackage{siunitx} \usepackage{bm}" 
         # amsmath # maths package
         # siunitx     # si units
         # bm           # maths bold symbols
 
-        rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-        rc('font', family='serif')   
+        #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+        #rc('font', family='serif')   
         
         return 0
 

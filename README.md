@@ -13,7 +13,7 @@ pip install sciscripttools
 ```
 git clone https://github.com/lifelemons/sciscripttools.git
 cd sciscripttools
-python setup.py install
+pip install .
 ```
 ## Examples 
 ### IO
@@ -87,6 +87,49 @@ sf.xlabel(axes, xlabel, xunit)
 fig.savefig("quick_plot.png")
 ```
 ![example quick plot](examples/readme_plot_example.png)
+
+## Development
+
+### `Dev Containers` in Visual Studio Code
+
+Use the `Dev Containter` extension and run the associated `.devcontainer.json` for a seamless development environment.
+
+The local `sciscripttools` package is installed in an 'editable' from as soon as the container is created.
+Development is then done within Visual Studio Code.
+
+Once inside the container, one can run a jupyter server with the command `jupyter-launch`.
+
+### Docker
+
+An environment for development with `Docker` is provided via the `Dockerfile`.
+Build the container with
+```bash
+docker build -t dev-st .
+```
+
+Run the container with
+```bash
+docker run -it -p 8888:8888 -v .:/home/dev/sciscripttools dev-st
+```
+Note the open port is to allow for access for a jupyter server
+
+Install the package with
+```
+pip install -e .
+```
+This installs the package in an editable form. It allows changes to be reflected almost instantly. Simply open a new python kernel to see the changes.
+
+Some useful commands:
+
+Launch an interactive Python interpreter 
+```
+jupyter-console
+```
+
+Launch a jupyter server
+```
+jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+```
 
 ## Contribute
 Found a bug, want to add functionality, or fixed a bug?

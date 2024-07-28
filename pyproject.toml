@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sciscripttools"
+authors = [
+    {name = "lifelemons", email = "ash.p.patel@proton.me"},
+]
+description = "Small set of tools and functions for scientific code and scripts."
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "GPLv3"}
+classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.17.0",
+    "matplotlib>=3.1.1",
+]
+dynamic = ["version"]
