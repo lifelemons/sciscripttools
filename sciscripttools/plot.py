@@ -236,9 +236,9 @@ class standard_font:
         # siunitx     # si units
         # bm           # maths bold symbols
 
-        #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-        #rc('font', family='serif')   
-        
+        plt.rcParams['mathtext.fontset'] = 'cm'
+        plt.rcParams['font.family'] = 'cmu-serif'
+
         return 0
 
     def set_font_size(self, font_size=None):
